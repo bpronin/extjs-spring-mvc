@@ -6,10 +6,10 @@ Ext.define('AM.store.Users', {
     proxy: {
         type: 'ajax',
         api: {
-            read: 'data/read.json',
-            update: 'data/update.json',
-            destroy: 'data/destroy.json',
-            create: 'data/create.json'
+            read: 'data/user/read',
+            update: 'data/user/update',
+            destroy: 'data/user/destroy',
+            create: 'data/user/create'
         },
         writer: {
             allowSingle: false /* if not set operations on single records will fail */

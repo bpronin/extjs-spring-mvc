@@ -17,7 +17,7 @@ import java.util.Map;
  * @author Boris Pronin (<a href="mailto:bpronin@bttprime.com">bpronin@bttprime.com</a>)
  */
 @Controller
-@RequestMapping("/data")
+@RequestMapping("/user")
 public class UsersController {
 
     private int nextId;
@@ -29,13 +29,13 @@ public class UsersController {
         add();
     }
 
-    @RequestMapping("/read.json")
+    @RequestMapping("/read")
     @ResponseBody
     public List<User> read() {
         return new ArrayList<User>(users.values());
     }
 
-    @RequestMapping("/create.json")
+    @RequestMapping("/create")
     @ResponseBody
     public User create() {
         User user = add();
@@ -43,14 +43,14 @@ public class UsersController {
         return user;
     }
 
-    @RequestMapping(value = "/update.json", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public void update(@RequestBody User user) {
         users.put(user.getId(), user);
         System.out.println("UPDATE: " + user);
     }
 
-    @RequestMapping(value = "/destroy.json", method = RequestMethod.POST)
+    @RequestMapping(value = "/destroy", method = RequestMethod.POST)
     @ResponseBody
     public void destroy(@RequestBody User[] users) {
         for (User user : users) {
