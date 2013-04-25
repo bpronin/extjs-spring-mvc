@@ -14,31 +14,49 @@ Ext.define('AM.controller.Users', {
         }
     ],
 
-    init: function() {
+    init: function () {
         this.control({
             'viewport > userlist dataview': {
                 itemdblclick: this.editUser
             },
             'useredit button[action=save]': {
                 click: this.updateUser
+            },
+            '*[action=create]': {
+                click: this.createUser
+            },
+            '*[action=remove]': {
+                click: this.removeUser
             }
         });
     },
 
-    editUser: function(grid, record) {
+    editUser: function (grid, record) {
         var edit = Ext.create('AM.view.user.Edit').show();
 
         edit.down('form').loadRecord(record);
     },
 
-    updateUser: function(button) {
-        var win    = button.up('window'),
-            form   = win.down('form'),
+    updateUser: function (button) {
+        var win = button.up('window'),
+            form = win.down('form'),
             record = form.getRecord(),
             values = form.getValues();
 
         record.set(values);
         win.close();
         this.getUsersStore().sync();
+    },
+
+    removeUser: function (button) {
+        var records = button.up('panel').getSelectionModel().getSelection();
+        this.getUsersStore().remove(records);
+        this.getUsersStore().sync();
+    },
+
+    createUser: function () {
+        this.getUsersStore().add({});
+        this.getUsersStore().sync();
     }
+
 });

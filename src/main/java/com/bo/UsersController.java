@@ -20,12 +20,13 @@ import java.util.Map;
 @RequestMapping("/data")
 public class UsersController {
 
+    private int nextId;
     private Map<Integer, User> users = new LinkedHashMap<Integer, User>();
 
     public UsersController() {
-        users.put(0, new User(0, "user 0", "user-0@mail.com"));
-        users.put(1, new User(1, "user 1", "user-1@mail.com"));
-        users.put(2, new User(2, "user 2", "user-2@mail.com"));
+        add();
+        add();
+        add();
     }
 
     @RequestMapping("/read.json")
@@ -34,11 +35,35 @@ public class UsersController {
         return new ArrayList<User>(users.values());
     }
 
+    @RequestMapping("/create.json")
+    @ResponseBody
+    public User create() {
+        User user = add();
+        System.out.println("CREATE: " + user);
+        return user;
+    }
+
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     @ResponseBody
     public void update(@RequestBody User user) {
-        System.out.println("UPDATE:" + user);
         users.put(user.getId(), user);
+        System.out.println("UPDATE: " + user);
+    }
+
+    @RequestMapping(value = "/destroy.json", method = RequestMethod.POST)
+    @ResponseBody
+    public void destroy(@RequestBody User[] users) {
+        for (User user : users) {
+            this.users.remove(user.getId());
+            System.out.println("DESTROY: " + user);
+        }
+    }
+
+    private User add() {
+        int id = nextId++;
+        User user = new User(id, "user-" + id, "user-" + id + "@mail.com");
+        users.put(id, user);
+        return user;
     }
 
 }
