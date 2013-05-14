@@ -1,15 +1,10 @@
 package com.bo;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Class Users.
@@ -18,21 +13,26 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/user")
-public class UsersController {
+public class UsersService {
 
-    private int nextId;
-    private Map<Integer, User> users = new LinkedHashMap<Integer, User>();
+    private List<User> users = new ArrayList<User>();
 
-    public UsersController() {
-        add();
-        add();
-        add();
+    public UsersService() {
+        for (int i = 0; i < 100; i++) {
+            add();
+        }
     }
 
     @RequestMapping("/read")
     @ResponseBody
-    public List<User> read() {
-        return new ArrayList<User>(users.values());
+    public Users read(@RequestParam int start, @RequestParam int limit) {
+        int size = users.size();
+        int end = start + limit;
+        if (end > size) {
+            end = size;
+        }
+        System.out.println("GET: " + start + " : " + end);
+        return new Users(users.subList(start, end), size);
     }
 
     @RequestMapping("/create")
@@ -45,9 +45,11 @@ public class UsersController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public void update(@RequestBody User user) {
-        users.put(user.getId(), user);
-        System.out.println("UPDATE: " + user);
+    public void update(@RequestBody User[] users) {
+        for (User user : users) {
+            this.users.set(user.getId(), user);
+            System.out.println("UPDATE: " + user);
+        }
     }
 
     @RequestMapping(value = "/destroy", method = RequestMethod.POST)
@@ -60,9 +62,10 @@ public class UsersController {
     }
 
     private User add() {
-        int id = nextId++;
-        User user = new User(id, "user-" + id, "user-" + id + "@mail.com");
-        users.put(id, user);
+        int id = users.size();
+        int no = id + 1;
+        User user = new User(id, "user-" + no, "user-" + no + "@mail.com");
+        users.add(user);
         return user;
     }
 

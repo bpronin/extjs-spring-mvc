@@ -29,6 +29,8 @@ Ext.define('AM.controller.Users', {
                 click: this.removeUser
             }
         });
+
+        this.getUsersStore().loadPage(1);
     },
 
     editUser: function (grid, record) {
@@ -55,8 +57,10 @@ Ext.define('AM.controller.Users', {
     },
 
     createUser: function () {
-        this.getUsersStore().add({});
-        this.getUsersStore().sync();
+        var store = this.getUsersStore();
+        store.add({});
+        store.sync();
+//        store.loadPage(store.currentPage);
     }
 
 });
