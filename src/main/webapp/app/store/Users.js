@@ -2,10 +2,10 @@ Ext.define('AM.store.Users', {
     extend: 'Ext.data.Store',
 
     model: 'AM.model.User',
-//    autoLoad: true,
-    leadingBufferZone: 0,
-    pageSize: 10,
+    autoLoad: true,
     buffered: true,
+    leadingBufferZone: 200,
+    pageSize: 100,
     proxy: {
         type: 'ajax',
         api: {

@@ -60,7 +60,7 @@ Ext.define('AM.controller.Users', {
         var store = this.getUsersStore();
         store.add({});
         store.sync();
-//        store.loadPage(store.currentPage);
+        store.reload();
     }
 
 });

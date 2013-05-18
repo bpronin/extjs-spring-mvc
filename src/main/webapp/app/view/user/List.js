@@ -15,6 +15,10 @@ Ext.define('AM.view.user.List', {
     selModel: {
         selectionMode: 'MULTI'
     },
+    viewConfig: {
+        loadMask: false,
+        preserveScrollOnRefresh: true
+    },
     tbar: {
         items: [
             {
@@ -27,10 +31,5 @@ Ext.define('AM.view.user.List', {
             }
         ]
     }
-//    ,
-//    bbar: {
-//        xtype:'pagingtoolbar',
-//        store:'Users'
-//    }
 
 });
